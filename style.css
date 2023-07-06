@@ -1,0 +1,163 @@
+@charset "UTF-8";
+body {
+  margin: 0;
+  color: #fff;
+  text-transform: capitalize;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 20px;
+}
+
+header {
+  display: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+.ph-hide {
+  display: none;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+main {
+  position: relative;
+}
+
+.ph-backgorund {
+  position: relative;
+  overflow: hidden;
+}
+
+.ph-backgorund img {
+  height: 100vh;
+  width: 100vw;
+}
+
+.ph-backgorund::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.ph-main {
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.ph-main__summary {
+  width: calc(100vw - 75px);
+  top: 50px;
+  left: 50px;
+  position: absolute;
+}
+
+.ph-main__head img {
+  width: 80px;
+}
+
+.ph-main__detail {
+  position: absolute;
+  right: 50px;
+  top: 0;
+}
+
+.ph-main__detail h3 {
+  margin-bottom: 10px;
+}
+
+.ph-main__detail--item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+}
+
+.ph-main__detail--item:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.ph-main__detail--icon {
+  width: 40px;
+}
+
+.ph-history {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+
+#ph-search-trigger {
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+#ph-search-trigger img {
+  width: 18px;
+  margin-right: 10px;
+}
+
+#ph-current-location {
+  font-weight: 300;
+  font-size: 20px;
+  margin: 10px 0 30px;
+}
+
+#ph-current-location span {
+  display: block;
+  margin-top: 10px;
+}
+
+#ph-current-temp {
+  position: relative;
+  font-size: 46px;
+  margin: 30px 0;
+}
+
+#ph-current-temp:after {
+  content: " °C";
+}
+
+#humidity:after,
+#air-pressure:after,
+#wind-speed:after {
+  margin-left: 6px;
+}
+
+#humidity:after {
+  content: "%";
+}
+
+#air-pressure:after {
+  content: "PS";
+}
+
+#wind-speed:after {
+  content: "km/h";
+}
+/*# sourceMappingURL=style.css.map */
