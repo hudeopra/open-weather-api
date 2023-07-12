@@ -23,7 +23,7 @@
             <section class="ph-main">
                 <div class="ph-main__summary">
                     <div class="ph-main__head">
-                        <img src="img/fog.png" alt="">
+                        <img class="ph-main__weather-icon" src="img/fog.png" alt="">
                         <div class="ph-main__head--content">
                             <h1 id="ph-current-weather">
                                 fog
@@ -41,8 +41,8 @@
                             28 
                         </p>
                         <a href="javascript:void(0)" id="ph-search-trigger"><img src="img/pin.png" alt="">Change Location</a>
-                        <form action="" class="ph-hide">
-                            <input type="text">
+                        <form name="search" class="" id="ph-search__wrapper">
+                            <input type="text" placeholder="City Name" name="cityName">
                             <input type="submit">
                         </form>
                     </div>
@@ -56,7 +56,7 @@
                                     Humidity
                                 </h3>
                                 <p id="humidity">
-                                    50%
+                                    50
                                 </p>
                             </div>
                         </div>
@@ -70,19 +70,6 @@
                                 </h3>
                                 <p id="air-pressure">
                                     1009.483 PS
-                                </p>
-                            </div>
-                        </div>
-                        <div class="ph-main__detail--item">
-                            <div class="ph-main__detail--icon">
-                                <img src="img/slight-rain.png" alt="">
-                            </div>
-                            <div class="ph-main__detail--content">
-                                <h3>
-                                    Chance of Rain
-                                </h3>
-                                <p id="rain">
-                                    0%
                                 </p>
                             </div>
                         </div>
