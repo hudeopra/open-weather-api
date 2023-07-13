@@ -23,7 +23,7 @@
             <section class="ph-main">
                 <div class="ph-main__summary">
                     <div class="ph-main__head">
-                        <img class="ph-main__weather-icon" src="img/fog.png" alt="">
+                        <img id="ph-main__weather-icon" src="img/fog.png" alt="">
                         <div class="ph-main__head--content">
                             <h1 id="ph-current-weather">
                                 fog
@@ -40,11 +40,16 @@
                         <p id="ph-current-temp">
                             28 
                         </p>
-                        <a href="javascript:void(0)" id="ph-search-trigger"><img src="img/pin.png" alt="">Change Location</a>
-                        <form name="search" class="" id="ph-search__wrapper">
-                            <input type="text" placeholder="City Name" name="cityName">
-                            <input type="submit">
-                        </form>
+                        <div class="ph-form__wrapper">
+                            <a href="javascript:void(0)" id="ph-search-trigger">
+                                <img src="img/pin.png" alt="">
+                                <span>Change Location</span>
+                            </a>
+                            <form name="search" class="" id="ph-search__wrapper">
+                                <input type="text" placeholder="City Name" name="cityName">
+                                <input type="submit">
+                            </form>
+                        </div>
                     </div>
                     <div class="ph-main__detail">
                         <div class="ph-main__detail--item">
@@ -88,11 +93,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="ph-history">
+                <div class="ph-history ph">
                     <a href="javascript:void(0)" id="ph-history-trigger">View History</a>
-                    <div class="ph-history__wrapper">
-                        <div class="ph-history__item">
-                            
+                    <div class="ph-history__container">
+                        <!-- <span id="ph-history-location"></span> -->
+                        <div class="ph-history__wrapper">
+                            <div class="ph-history__item">
+                                <div class="date">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,6 +111,7 @@
         <footer>
 
         </footer>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="main.js"></script>
     </body>
 </html>
