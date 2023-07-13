@@ -229,7 +229,7 @@ input[type=submit] {
 }
 
 #ph-history-trigger {
-  padding: 8px 15px;
+  padding: 12px 30px;
   border: 1px solid transparent;
   -webkit-transition: all .5s;
   transition: all .5s;
