@@ -47,11 +47,11 @@ main {
 }
 
 .ph-backgorund img {
-  height: 100%;
+  height: 100vh;
   width: 100vw;
-  max-height: 100vh;
   -o-object-fit: cover;
      object-fit: cover;
+  min-height: 550px;
 }
 
 .ph-backgorund::after {
@@ -62,6 +62,10 @@ main {
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+#ph-main__weather-icon {
+  margin-bottom: 20px;
 }
 
 .ph-main {
@@ -81,7 +85,7 @@ main {
 }
 
 .ph-main__head img {
-  width: 80px;
+  width: 140px;
 }
 
 .ph-main__detail {
@@ -113,7 +117,7 @@ main {
 
 .ph-main__detail--content p {
   font-weight: 600;
-  font-size: 32px;
+  font-size: 46px;
 }
 
 .ph-history {
@@ -150,7 +154,7 @@ main {
 
 #ph-current-temp {
   position: relative;
-  font-size: 46px;
+  font-size: 60px;
   margin: 30px 0;
 }
 
@@ -161,15 +165,20 @@ main {
 #humidity:after,
 #air-pressure:after,
 #wind-speed:after {
-  margin-left: 6px;
+  font-size: 20px;
+}
+
+#humidity {
+  position: relative;
 }
 
 #humidity:after {
   content: "%";
+  font-size: 30px;
 }
 
 #air-pressure:after {
-  content: "PS";
+  content: "hPa";
 }
 
 #wind-speed:after {
@@ -208,8 +217,27 @@ main {
 input[type=text] {
   padding: 8px 12px;
   outline: 0;
-  border: 1px solid transparent;
+  border: 0;
+  border-bottom: 1px solid #fff;
   font-weight: 600;
+  background: transparent;
+  color: #fff;
+}
+
+input[type=text]::-webkit-input-placeholder {
+  color: #fff;
+}
+
+input[type=text]:-ms-input-placeholder {
+  color: #fff;
+}
+
+input[type=text]::-ms-input-placeholder {
+  color: #fff;
+}
+
+input[type=text]::placeholder {
+  color: #fff;
 }
 
 input[type=text]:focus, input[type=text]:active {
@@ -238,4 +266,53 @@ input[type=submit] {
 #ph-history-trigger:hover {
   border-color: #fff;
 }
-/*# sourceMappingURL=style.css.map */
+
+@media screen and (max-width: 991px) {
+  .ph-main__head img {
+    width: 100px;
+  }
+  .ph-main__summary {
+    top: 2.5rem;
+    left: 2.5rem;
+    width: calc(100vw - 5rem);
+  }
+  .ph-main__detail--content p {
+    font-size: 36px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .ph-main__detail {
+    position: static;
+  }
+  .ph-form__wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .ph-main__summary {
+    top: 10rem;
+  }
+  .ph-form__wrapper {
+    position: absolute;
+    top: -5rem;
+    right: auto;
+    left: 0;
+  }
+  #ph-current-temp {
+    font-size: 46px;
+  }
+  .ph-main__detail h3 {
+    font-size: 20px;
+  }
+  .ph-main__detail--content p {
+    font-size: 28px;
+  }
+  .ph-main__detail--icon {
+    width: 50px;
+  }
+}
+/*# sourceMappingURL=2358823_Prabin-Maharjan.css.map */
