@@ -1,0 +1,318 @@
+@charset "UTF-8";
+body {
+  margin: 0;
+  color: #fff;
+  text-transform: capitalize;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 20px;
+}
+
+header {
+  display: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+.ph-hide {
+  display: none;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+main {
+  position: relative;
+}
+
+.ph-backgorund {
+  position: relative;
+  overflow: hidden;
+}
+
+.ph-backgorund img {
+  height: 100vh;
+  width: 100vw;
+  -o-object-fit: cover;
+     object-fit: cover;
+  min-height: 550px;
+}
+
+.ph-backgorund::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#ph-main__weather-icon {
+  margin-bottom: 20px;
+}
+
+.ph-main {
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.ph-main__summary {
+  width: calc(100vw - 10rem);
+  top: 5rem;
+  left: 5rem;
+  position: absolute;
+}
+
+.ph-main__head img {
+  width: 140px;
+}
+
+.ph-main__detail {
+  position: absolute;
+  right: 50px;
+  top: 0;
+}
+
+.ph-main__detail h3 {
+  margin-bottom: 10px;
+  font-weight: 300;
+}
+
+.ph-main__detail--item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+}
+
+.ph-main__detail--item:not(:first-of-type) {
+  margin-top: 30px;
+}
+
+.ph-main__detail--icon {
+  width: 60px;
+  margin-right: 15px;
+}
+
+.ph-main__detail--content p {
+  font-weight: 600;
+  font-size: 46px;
+}
+
+.ph-history {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+
+#ph-search-trigger {
+  font-size: 18px;
+}
+
+#ph-search-trigger img {
+  width: 14px;
+  margin-right: 2px;
+}
+
+#ph-search-trigger.active ~ #ph-search__wrapper {
+  opacity: 1;
+  visibility: visible;
+  top: 10px;
+}
+
+#ph-current-location {
+  font-weight: 300;
+  font-size: 20px;
+  margin: 10px 0 30px;
+}
+
+#ph-current-location span {
+  display: block;
+  margin-top: 10px;
+}
+
+#ph-current-temp {
+  position: relative;
+  font-size: 60px;
+  margin: 30px 0;
+}
+
+#ph-current-temp:after {
+  content: " °C";
+}
+
+#humidity:after,
+#air-pressure:after,
+#wind-speed:after {
+  font-size: 20px;
+}
+
+#humidity {
+  position: relative;
+}
+
+#humidity:after {
+  content: "%";
+  font-size: 30px;
+}
+
+#air-pressure:after {
+  content: "hPa";
+}
+
+#wind-speed:after {
+  content: "km/h";
+}
+
+.ph-form__wrapper {
+  width: 200px;
+}
+
+#ph-search__wrapper {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  top: 15px;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#ph-search__wrapper:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  background-image: url("img/search.png");
+  background-size: contain;
+  height: 16px;
+  width: 16px;
+  z-index: 2;
+}
+
+input[type=text] {
+  padding: 8px 12px;
+  outline: 0;
+  border: 0;
+  border-bottom: 1px solid #fff;
+  font-weight: 600;
+  background: transparent;
+  color: #fff;
+}
+
+input[type=text]::-webkit-input-placeholder {
+  color: #fff;
+}
+
+input[type=text]:-ms-input-placeholder {
+  color: #fff;
+}
+
+input[type=text]::-ms-input-placeholder {
+  color: #fff;
+}
+
+input[type=text]::placeholder {
+  color: #fff;
+}
+
+input[type=text]:focus, input[type=text]:active {
+  border-color: lime;
+}
+
+input[type=submit] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0;
+  background-color: transparent;
+  border: 0;
+  height: 33px;
+  width: 33px;
+  z-index: 3;
+}
+
+#ph-history-trigger {
+  padding: 12px 30px;
+  border: 1px solid transparent;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+
+#ph-history-trigger:hover {
+  border-color: #fff;
+}
+
+@media screen and (max-width: 991px) {
+  .ph-main__head img {
+    width: 100px;
+  }
+  .ph-main__summary {
+    top: 2.5rem;
+    left: 2.5rem;
+    width: calc(100vw - 5rem);
+  }
+  .ph-main__detail--content p {
+    font-size: 36px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .ph-main__detail {
+    position: static;
+  }
+  .ph-form__wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .ph-main__summary {
+    top: 10rem;
+  }
+  .ph-form__wrapper {
+    position: absolute;
+    top: -5rem;
+    right: auto;
+    left: 0;
+  }
+  #ph-current-temp {
+    font-size: 46px;
+  }
+  .ph-main__detail h3 {
+    font-size: 20px;
+  }
+  .ph-main__detail--content p {
+    font-size: 28px;
+  }
+  .ph-main__detail--icon {
+    width: 50px;
+  }
+}
+/*# sourceMappingURL=2358823_Prabin-Maharjan.css.map */
