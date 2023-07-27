@@ -1,7 +1,7 @@
 <?php
 // Allow CORS
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
 // MySQL credentials
@@ -12,7 +12,11 @@ $dbname = "weather_webapp";
 
 // Function to retrieve and display weather data
 function displayWeatherData($locationName, $conn) {
-    // Prepare the SQL statement to retrieve the 7 most recent weather data for the given location
+    // Get the current weather data from the JSON file
+    $jsonData = file_get_contents('data.json');
+    $currentWeatherData = json_decode($jsonData, true);
+
+    // Prepare the SQL statement to retrieve the 7 most recent historical weather data for the given location
     $sql = "SELECT * FROM weather_data
             WHERE location = ? 
             ORDER BY date DESC
@@ -32,84 +36,98 @@ function displayWeatherData($locationName, $conn) {
 
     // Check if there are any results
     if ($result->num_rows > 0) {
-        // Initialize an array to keep track of displayed dates
+        // Initialize an array to store historical weather data
+        $historyWeatherData = array();
         $displayedDates = array();
 
-        // Output the data
+        // Fetch and store the historical data
         while ($row = $result->fetch_assoc()) {
-            $date = date('Y-m-d', strtotime($row['date'])); // Convert the date to Y-m-d format
+            $date = date('Y-m-d', strtotime($row['date']));
+            
             // Check if the date has already been displayed
             if (!in_array($date, $displayedDates)) {
                 // Add the date to the displayedDates array
                 $displayedDates[] = $date;
-
-                echo "Date: " . $row['date'] . "<br>";
-                echo "Location Name: " . $row['location'] . "<br>";
-                echo "Weather Main: " . $row['weather_main'] . "<br>";
-                echo "Temperature: " . $row['temperature'] . "<br>";
-                echo "Humidity: " . $row['humidity'] . "<br>";
-                echo "Pressure: " . $row['pressure'] . "<br>";
-                echo "Wind Speed: " . $row['wind_speed'] . "<br>";
-                echo "<hr>";
+                
+                $historyWeatherData[] = $row;
             }
         }
+
+        // Generate HTML content for both current and historical weather data
+        $htmlContent = '<div id="current-weather">';
+        $htmlContent .= '<h2>Current Weather</h2>';
+        $htmlContent .= '<p>Location: ' . $currentWeatherData['name'] . '</p>';
+        $htmlContent .= '<p>Weather: ' . $currentWeatherData['weather'][0]['main'] . '</p>';
+        $htmlContent .= '<p>Temperature: ' . $currentWeatherData['main']['temp'] . '°C</p>';
+        $htmlContent .= '<p>Humidity: ' . $currentWeatherData['main']['humidity'] . '%</p>';
+        $htmlContent .= '<p>Air Pressure: ' . $currentWeatherData['main']['pressure'] . ' hPa</p>';
+        $htmlContent .= '<p>Wind Speed: ' . $currentWeatherData['wind']['speed'] . ' m/s</p>';
+        $htmlContent .= '</div>';
+
+        $htmlContent .= '<div id="historical-weather">';
+        $htmlContent .= '<h2>Historical Weather</h2>';
+
+        foreach ($historyWeatherData as $historyData) {
+            $htmlContent .= '<p>Date: ' . $historyData['date'] . '</p>';
+            $htmlContent .= '<p>Weather: ' . $historyData['weather_main'] . '</p>';
+            $htmlContent .= '<p>Temperature: ' . $historyData['temperature'] . '°C</p>';
+            $htmlContent .= '<p>Humidity: ' . $historyData['humidity'] . '%</p>';
+            $htmlContent .= '<p>Air Pressure: ' . $historyData['pressure'] . ' hPa</p>';
+            $htmlContent .= '<p>Wind Speed: ' . $historyData['wind_speed'] . ' m/s</p>';
+            $htmlContent .= '<hr>';
+        }
+
+        $htmlContent .= '</div>';
+
+        echo $htmlContent;
     } else {
-        echo "No data found for the location: " . $locationName;
+        // If no historical data found, generate HTML content for only current weather data
+        $htmlContent = '<div id="current-weather">';
+        $htmlContent .= '<h2>Current Weather</h2>';
+        $htmlContent .= '<p>Location: ' . $currentWeatherData['name'] . '</p>';
+        $htmlContent .= '<p>Weather: ' . $currentWeatherData['weather'][0]['main'] . '</p>';
+        $htmlContent .= '<p>Temperature: ' . $currentWeatherData['main']['temp'] . '°C</p>';
+        $htmlContent .= '<p>Humidity: ' . $currentWeatherData['main']['humidity'] . '%</p>';
+        $htmlContent .= '<p>Air Pressure: ' . $currentWeatherData['main']['pressure'] . ' hPa</p>';
+        $htmlContent .= '<p>Wind Speed: ' . $currentWeatherData['wind']['speed'] . ' m/s</p>';
+        $htmlContent .= '</div>';
+
+        echo $htmlContent;
     }
 
     // Close the statement
     $stmt->close();
 }
 
-// Check if the request method is POST
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Get the JSON data from the POST request body
-    $jsonData = file_get_contents('php://input');
-
-    try {
-        // Check if JSON data exists
-        if (!empty($jsonData)) {
-            // Write the JSON data to the data.json file
-            file_put_contents('data.json', $jsonData);
-
-            // Return a response to indicate the data was successfully updated
-            $response = array('status' => 'success', 'message' => 'Data updated successfully');
-            echo json_encode($response);
-        } else {
-            // If JSON data is missing in the request, throw an exception
-            throw new Exception('Error: JSON data not found in the request.');
-        }
-    } catch (Exception $e) {
-        // If an exception is caught, echo the error message
-        echo $e->getMessage();
-    }
-}
-
-// Get the location name from the JSON data
-$jsonData = file_get_contents('data.json');
-$dataArray = json_decode($jsonData, true);
-$locationName = isset($dataArray['name']) ? $dataArray['name'] : '';
-
-// Check if the location name is not empty
-if (!empty($locationName)) {
+// Check if the request method is GET
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
     // Connect to the MySQL server
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     // Check connection
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die(json_encode(array('status' => 'error', 'message' => "Connection failed: " . $conn->connect_error)));
     }
 
-    // Call the function to retrieve and display weather data
-    displayWeatherData($locationName, $conn);
+    // Get the location name from the JSON data
+    $jsonData = file_get_contents('data.json');
+    $dataArray = json_decode($jsonData, true);
+    $locationName = isset($dataArray['name']) ? $dataArray['name'] : '';
+
+    // Check if the location name is not empty
+    if (!empty($locationName)) {
+        // Call the function to retrieve and display weather data
+        displayWeatherData($locationName, $conn);
+    } else {
+        // If location name is empty, echo an error message
+        echo json_encode(array('status' => 'error', 'message' => "Error: Location name not found in the JSON data."));
+    }
 
     // Close the connection
     $conn->close();
-} else {
-    // If location name is empty, echo an error message
-    echo "Error: Location name not found in the JSON data.";
 }
 ?>
+
 
 
 

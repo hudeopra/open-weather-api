@@ -257,3 +257,72 @@ $(document).on('click', '.ph-history #ph-search-trigger', function () {
 });
 
 
+// Add this script tag to your HTML file where you want to fetch and display historical weather data 
+
+// Function to fetch historical weather data from the JSON file
+async function fetchHistoricalWeatherData() {
+    try {
+        const response = await fetch('http://localhost/weather/history_data.json');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+// Function to display historical weather data on the webpage
+function displayHistoricalWeatherData(historicalData) {
+    // Get the HTML element where you want to display the historical data
+    const historicalDataContainer = document.getElementById('historical-data');
+
+    // Check if historicalData is not empty
+    if (historicalData && historicalData.length > 0) {
+        // Clear the container
+        historicalDataContainer.innerHTML = '';
+
+        // Loop through the historical data and create HTML elements to display it
+        historicalData.forEach((data) => {
+            const dateElement = document.createElement('p');
+            dateElement.textContent = `Date: ${data.date}`;
+
+            const locationElement = document.createElement('p');
+            locationElement.textContent = `Location Name: ${data.location}`;
+
+            const weatherMainElement = document.createElement('p');
+            weatherMainElement.textContent = `Weather Main: ${data.weather_main}`;
+
+            const temperatureElement = document.createElement('p');
+            temperatureElement.textContent = `Temperature: ${data.temperature}`;
+
+            const humidityElement = document.createElement('p');
+            humidityElement.textContent = `Humidity: ${data.humidity}`;
+
+            const pressureElement = document.createElement('p');
+            pressureElement.textContent = `Pressure: ${data.pressure}`;
+
+            const windSpeedElement = document.createElement('p');
+            windSpeedElement.textContent = `Wind Speed: ${data.wind_speed}`;
+
+            const hrElement = document.createElement('hr');
+
+            // Append the elements to the container
+            historicalDataContainer.appendChild(dateElement);
+            historicalDataContainer.appendChild(locationElement);
+            historicalDataContainer.appendChild(weatherMainElement);
+            historicalDataContainer.appendChild(temperatureElement);
+            historicalDataContainer.appendChild(humidityElement);
+            historicalDataContainer.appendChild(pressureElement);
+            historicalDataContainer.appendChild(windSpeedElement);
+            historicalDataContainer.appendChild(hrElement);
+        });
+    } else {
+        // If historicalData is empty or null, display an error message
+        historicalDataContainer.innerHTML = 'No historical data found.';
+    }
+}
+
+// Call the fetchHistoricalWeatherData function and display the data
+fetchHistoricalWeatherData().then((historicalData) => {
+    displayHistoricalWeatherData(historicalData);
+});
