@@ -75,6 +75,7 @@ function getHistoricalWeatherData($locationName, $conn) {
 }
 
 
+
 // Check if the request method is GET
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     // Connect to the MySQL server
@@ -92,15 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
     // Check if the location name is not empty
     if (!empty($locationName)) {
-        // Call the function to retrieve and display current weather data
-        $currentWeatherData = getCurrentWeatherData();
-
         // Call the function to retrieve historical weather data
         $historicalWeatherData = getHistoricalWeatherData($locationName, $conn);
 
         // Prepare the response data as an array
         $response = array(
-            'currentWeatherData' => $currentWeatherData,
             'historicalWeatherData' => $historicalWeatherData
         );
 
@@ -118,4 +115,3 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         echo json_encode(array('status' => 'error', 'message' => "Error: Location name not found in the JSON data."));
     }
 }
-?>
