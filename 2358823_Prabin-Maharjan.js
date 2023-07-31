@@ -107,73 +107,11 @@ function updateWeatherData(data) {
     }
 
 }
-
-// Function to fetch weather data from the API
-async function weatherCheck(city) {
-    try {
-        const response = await fetch(url + `&appid=${apikey}` + `&q=` + city);
-        const data = await response.json();
-        console.log(data)
-        if (data.cod === "404") {
-            alert("City not found");
-            return;
-        }
-
-        updateWeatherData(data);
-
-        // Convert the weatherData object to JSON string
-        const jsonData = JSON.stringify(data);
-
-        // Log the JSON data in the console (optional)
-        console.log(jsonData);
-
-        // Store the JSON data on the server using AJAX
-        await storeDataOnServer(jsonData);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-// Function to store the JSON data on the server using AJAX
-async function storeDataOnServer(jsonData) {
-    try {
-        // Validate JSON data
-        const parsedData = JSON.parse(jsonData);
-        if (!parsedData) {
-            throw "Invalid JSON data";
-        }
-
-        // Send an AJAX POST request to the PHP script to store the data
-        const response = await fetch('http://localhost/weather/storedata.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: jsonData // Send JSON data directly without wrapping it inside 'jsonData'
-        });
-
-        // Check the response status
-        if (!response.ok) {
-            throw "Error storing data on the server";
-        }
-
-        // Parse the response
-        const result = await response.json();
-
-        // Log the result in the console (optional)
-        console.log(result);
-
-        // Update the data.json file with the latest JSON data
-        await updateDataFile(jsonData); // Call the function to update the data.json file
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 // Function to update the data.json file with the latest JSON data
 async function updateDataFile(jsonData) {
     try {
         // Send an AJAX POST request to the PHP script to update the data.json file
-        const response = await fetch('http://localhost/weather/updateDataFile.php', {
+        const response = await fetch('http://localhost/weather/storedata.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -191,6 +129,57 @@ async function updateDataFile(jsonData) {
 
         // Log the result in the console (optional)
         console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Function to fetch weather data from the API and update data.json
+async function weatherCheck(city) {
+    try {
+        const response = await fetch(url + `&appid=${apikey}` + `&q=` + city);
+        const data = await response.json();
+        console.log(data);
+
+        if (data.cod === "404") {
+            alert("City not found");
+            return;
+        }
+
+        // Update the UI with the latest weather data
+        updateWeatherData(data);
+
+        // Convert the data to JSON string
+        const jsonData = JSON.stringify(data);
+
+        // Update the data.json file with the latest JSON data
+        await updateDataFile(jsonData);
+
+        console.log('Data.json file updated successfully!');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Function to update the data.json file with the latest JSON data
+async function updateDataFile(jsonData) {
+    try {
+        // Send an AJAX POST request to the PHP script to update the data.json file
+        const response = await fetch('http://localhost/weather/storedata.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        });
+
+        // Check the response status
+        if (!response.ok) {
+            throw "Error updating data.json file";
+        }
+
+        // Log the result in the console (optional)
+        console.log('Data.json file updated successfully!');
     } catch (error) {
         console.error('Error:', error);
     }
@@ -271,6 +260,7 @@ async function fetchHistoricalWeatherData() {
     }
 }
 
+
 // Function to display historical weather data on the webpage
 function displayHistoricalWeatherData(historicalData) {
     // Get the HTML element where you want to display the historical data
@@ -281,40 +271,27 @@ function displayHistoricalWeatherData(historicalData) {
         // Clear the container
         historicalDataContainer.innerHTML = '';
 
-        // Loop through the historical data and create HTML elements to display it
-        historicalData.forEach((data) => {
-            const dateElement = document.createElement('p');
-            dateElement.textContent = `Date: ${data.date}`;
+        // Loop through the historical data and update the HTML elements with data
+        historicalData.forEach((data, index) => {
+            const dayElement = document.createElement('div');
+            dayElement.classList.add('ph-history__item');
+            dayElement.id = `day${7 - index}`;
 
-            const locationElement = document.createElement('p');
-            locationElement.textContent = `Location Name: ${data.location}`;
+            // Extract only the date part from the date property
+            const date = new Date(data.date);
+            const formattedDate = date.toISOString().split('T')[0];
 
-            const weatherMainElement = document.createElement('p');
-            weatherMainElement.textContent = `Weather Main: ${data.weather_main}`;
+            dayElement.innerHTML = `
+          <div class="date">Date: ${formattedDate}</div>
+          <div class="location">Location Name: ${data.location}</div>
+          <div class="weatherMain">Weather Main: ${data.weather_main}</div>
+          <div class="temperature">Temperature: ${data.temperature}</div>
+          <div class="humidity">Humidity: ${data.humidity}</div>
+          <div class="pressure">Pressure: ${data.pressure}</div>
+          <div class="windSpeed">Wind Speed: ${data.wind_speed}</div>
+        `;
 
-            const temperatureElement = document.createElement('p');
-            temperatureElement.textContent = `Temperature: ${data.temperature}`;
-
-            const humidityElement = document.createElement('p');
-            humidityElement.textContent = `Humidity: ${data.humidity}`;
-
-            const pressureElement = document.createElement('p');
-            pressureElement.textContent = `Pressure: ${data.pressure}`;
-
-            const windSpeedElement = document.createElement('p');
-            windSpeedElement.textContent = `Wind Speed: ${data.wind_speed}`;
-
-            const hrElement = document.createElement('hr');
-
-            // Append the elements to the container
-            historicalDataContainer.appendChild(dateElement);
-            historicalDataContainer.appendChild(locationElement);
-            historicalDataContainer.appendChild(weatherMainElement);
-            historicalDataContainer.appendChild(temperatureElement);
-            historicalDataContainer.appendChild(humidityElement);
-            historicalDataContainer.appendChild(pressureElement);
-            historicalDataContainer.appendChild(windSpeedElement);
-            historicalDataContainer.appendChild(hrElement);
+            historicalDataContainer.appendChild(dayElement);
         });
     } else {
         // If historicalData is empty or null, display an error message
@@ -322,7 +299,63 @@ function displayHistoricalWeatherData(historicalData) {
     }
 }
 
+// Function to fetch historical weather data from the JSON file
+function fetchHistoricalWeatherData() {
+    const apiUrl = 'http://localhost/weather/history_data.json';
+
+    return fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            // Handle error or return empty array if there's an issue
+            return [];
+        });
+}
+
 // Call the fetchHistoricalWeatherData function and display the data
 fetchHistoricalWeatherData().then((historicalData) => {
     displayHistoricalWeatherData(historicalData);
 });
+
+
+// Function to fetch historical weather data and update the "historical-data" div
+function fetchHistoricalData() {
+    const cityName = document.getElementById("cityName").value;
+    if (cityName === "") {
+        alert("Please enter a city name.");
+        return;
+    }
+
+    // Make a POST request to retrieve historical weather data
+    fetch("http://localhost/weather/retrieve_data.php", {
+        method: "POST",
+        body: JSON.stringify({ name: cityName }),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            // Process the data and update the "historical-data" div
+            const historicalDataDiv = document.getElementById("historical-data");
+            // Update the "historical-data" div's innerHTML here
+            // For example:
+            historicalDataDiv.innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+        })
+        .catch((error) => {
+            console.error("Error fetching weather data:", error);
+        });
+}
+
+// Event listener for the form submission
+document.getElementById("ph-search__wrapper").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the form from submitting
+    fetchHistoricalData(); // Call the function to fetch and update the historical data
+});
+
+

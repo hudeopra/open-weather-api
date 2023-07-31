@@ -108,11 +108,11 @@ function insertCurrentWeatherData($locationName, $conn) {
 
     // Extract data for insertion
     $date = date('Y-m-d', $currentWeatherData['dt']);
-    $weatherMain = $currentWeatherData['weather'][0]['main'];
-    $temperature = $currentWeatherData['main']['temp'];
-    $humidity = $currentWeatherData['main']['humidity'];
-    $pressure = $currentWeatherData['main']['pressure'];
-    $windSpeed = $currentWeatherData['wind']['speed'];
+    $weatherMain = isset($currentWeatherData['weather'][0]['main']) ? $currentWeatherData['weather'][0]['main'] : '';
+    $temperature = isset($currentWeatherData['main']['temp']) ? $currentWeatherData['main']['temp'] : '';
+    $humidity = isset($currentWeatherData['main']['humidity']) ? $currentWeatherData['main']['humidity'] : '';
+    $pressure = isset($currentWeatherData['main']['pressure']) ? $currentWeatherData['main']['pressure'] : '';
+    $windSpeed = isset($currentWeatherData['wind']['speed']) ? $currentWeatherData['wind']['speed'] : '';
 
     // Prepare the SQL statement to check if the record already exists
     $checkSql = "SELECT id FROM weather_data WHERE location = ? AND date = ? LIMIT 1";
@@ -232,6 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $conn->close();
 }
 ?>
+
 
 
 
