@@ -1,8 +1,4 @@
 <?php
-// Allow CORS
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST");
-header("Access-Control-Allow-Headers: Content-Type");
 
 // MySQL credentials
 $servername = "localhost";
@@ -12,10 +8,6 @@ $dbname = "weather_webapp";
 
 // Function to retrieve and display weather data
 function displayWeatherData($locationName, $conn) {
-    // Get the current weather data from the JSON file
-    $jsonData = file_get_contents('data.json');
-    $currentWeatherData = json_decode($jsonData, true);
-
     // Prepare the SQL statement to retrieve the 7 most recent historical weather data for the given location
     $sql = "SELECT * FROM weather_data
             WHERE location = ? 
@@ -34,67 +26,36 @@ function displayWeatherData($locationName, $conn) {
     // Get the result
     $result = $stmt->get_result();
 
-    // Check if there are any results
+    //Check if there are any results
     if ($result->num_rows > 0) {
-        // Initialize an array to store historical weather data
-        $historyWeatherData = array();
-        $displayedDates = array();
-
-        // Fetch and store the historical data
-        while ($row = $result->fetch_assoc()) {
-            $date = date('Y-m-d', strtotime($row['date']));
-
-            // Check if the date has already been displayed
-            if (!in_array($date, $displayedDates)) {
-                // Add the date to the displayedDates array
-                $displayedDates[] = $date;
-
-                $historyWeatherData[] = $row;
-            }
-        }
-
-        // Generate HTML content for both current and historical weather data
-        $htmlContent = '<div id="current-weather">';
-        $htmlContent .= '<h2>Current Weather</h2>';
-        $htmlContent .= '<p>Date: ' . date('Y-m-d', $currentWeatherData['dt']) . '</p>';
-        $htmlContent .= '<p>Location: ' . $currentWeatherData['name'] . '</p>';
-        $htmlContent .= '<p>Weather: ' . $currentWeatherData['weather'][0]['main'] . '</p>';
-        $htmlContent .= '<p>Temperature: ' . $currentWeatherData['main']['temp'] . '°C</p>';
-        $htmlContent .= '<p>Humidity: ' . $currentWeatherData['main']['humidity'] . '%</p>';
-        $htmlContent .= '<p>Air Pressure: ' . $currentWeatherData['main']['pressure'] . ' hPa</p>';
-        $htmlContent .= '<p>Wind Speed: ' . $currentWeatherData['wind']['speed'] . ' m/s</p>';
+        // Get the location from the first row since it's the same for all rows
+        $row = $result->fetch_assoc();
+        $location = $row['location'];
+        
+        // Generate HTML content for historical weather data
+        $htmlContent = '<div id="ph-history">';
+        $htmlContent .= '<p class="ph-text-vertical">' . $location . '</p>';
+        
+        do {
+            $htmlContent .= '<div class="ph-history__item"><p>' . date('Y-m-d', strtotime($row['date'])) . '</p>';
+            $htmlContent .= '<p id="weatherCondition">' . $row['weather_main'] . '</p>';
+            $htmlContent .= '<p>' . $row['temperature'] . '°C</p>';
+            $htmlContent .= '<p>' . $row['humidity'] . '%</p>';
+            $htmlContent .= '<p>' . $row['pressure'] . ' hPa</p>';
+            $htmlContent .= '<p>' . $row['wind_speed'] . ' m/s</p>';
+            $htmlContent .= '</div>';
+        } while ($row = $result->fetch_assoc());
+    
         $htmlContent .= '</div>';
-
-        $htmlContent .= '<div id="historical-weather">';
-        $htmlContent .= '<h2>Historical Weather</h2>';
-
-        foreach ($historyWeatherData as $historyData) {
-            $htmlContent .= '<p>Date: ' . $historyData['date'] . '</p>';
-            $htmlContent .= '<p>Weather: ' . $historyData['weather_main'] . '</p>';
-            $htmlContent .= '<p>Temperature: ' . $historyData['temperature'] . '°C</p>';
-            $htmlContent .= '<p>Humidity: ' . $historyData['humidity'] . '%</p>';
-            $htmlContent .= '<p>Air Pressure: ' . $historyData['pressure'] . ' hPa</p>';
-            $htmlContent .= '<p>Wind Speed: ' . $historyData['wind_speed'] . ' m/s</p>';
-            $htmlContent .= '<hr>';
-        }
-
-        $htmlContent .= '</div>';
-
+    
         echo $htmlContent;
     } else {
-        // If no historical data found, generate HTML content for only current weather data
-        $htmlContent = '<div id="current-weather">';
-        $htmlContent .= '<h2>Current Weather</h2>';
-        $htmlContent .= '<p>Location: ' . $currentWeatherData['name'] . '</p>';
-        $htmlContent .= '<p>Weather: ' . $currentWeatherData['weather'][0]['main'] . '</p>';
-        $htmlContent .= '<p>Temperature: ' . $currentWeatherData['main']['temp'] . '°C</p>';
-        $htmlContent .= '<p>Humidity: ' . $currentWeatherData['main']['humidity'] . '%</p>';
-        $htmlContent .= '<p>Air Pressure: ' . $currentWeatherData['main']['pressure'] . ' hPa</p>';
-        $htmlContent .= '<p>Wind Speed: ' . $currentWeatherData['wind']['speed'] . ' m/s</p>';
-        $htmlContent .= '</div>';
-
-        echo $htmlContent;
+        // If no historical data found, display a message
+        echo '<div id="ph-history">';
+        echo '<p>No historical weather data found.</p>';
+        echo '</div>';
     }
+    
 
     // Close the statement
     $stmt->close();
@@ -231,22 +192,16 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     // Close the connection
     $conn->close();
 }
+
+
+
+
+
 ?>
 
 
 
 
 
-<!-- CREATE TABLE weather_data (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    location VARCHAR(255) NOT NULL,
-    date DATETIME NOT NULL,
-    weather_main VARCHAR(50) NOT NULL,
-    temperature DECIMAL(5, 2) NOT NULL,
-    humidity INT NOT NULL,
-    pressure INT NOT NULL,
-    wind_speed DECIMAL(5, 2) NOT NULL,
-    UNIQUE KEY unique_location_date (location, date)
-);
--->
+
 

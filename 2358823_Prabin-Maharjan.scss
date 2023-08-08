@@ -1,0 +1,463 @@
+// Name: Prabin Maharjan
+// UID: 2358823
+body {
+    margin: 0;
+    color: #fff;
+    text-transform: capitalize;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 20px;
+}
+
+header {
+    display: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+    margin: 0;
+}
+
+.ph-hide {
+    display: none;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+main {
+    position: relative;
+}
+
+.ph-backgorund {
+    position: relative;
+    overflow: hidden;
+
+    img {
+
+        height: 100vh;
+        width: 100vw;
+        object-fit: cover;
+        min-height: 550px;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, .6);
+    }
+}
+
+#ph-main__weather-icon {
+    margin-bottom: 20px;
+}
+
+.ph-main {
+    position: absolute;
+    z-index: 2;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+
+    &__summary {
+        width: calc(100vw - 10rem);
+        top: 5rem;
+        left: 5rem;
+        position: absolute;
+    }
+
+    &__head {
+        img {
+            width: 140px;
+        }
+    }
+
+    &__detail {
+        position: absolute;
+        right: 50px;
+        top: 0;
+
+        h3 {
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        &--item {
+            display: flex;
+            gap: 10px;
+
+            &:not(:first-of-type) {
+                margin-top: 30px;
+            }
+        }
+
+        &--icon {
+            width: 60px;
+            margin-right: 15px;
+        }
+
+        &--content {
+            p {
+                font-weight: 600;
+                font-size: 46px;
+
+            }
+        }
+    }
+
+}
+
+
+
+.ph-history {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+
+#ph-search-trigger {
+    font-size: 18px;
+
+    img {
+        width: 14px;
+        margin-right: 2px;
+    }
+
+    &.active~#ph-search__wrapper {
+        opacity: 1;
+        visibility: visible;
+        top: 10px;
+    }
+}
+
+#ph-current-location {
+    font-weight: 300;
+    font-size: 20px;
+    margin: 10px 0 30px;
+
+    span {
+        display: block;
+        margin-top: 10px;
+    }
+}
+
+
+#ph-current-temp {
+    position: relative;
+    font-size: 60px;
+    margin: 30px 0;
+
+    &:after {
+        content: " °C";
+    }
+}
+
+#humidity:after,
+#air-pressure:after,
+#wind-speed:after {
+    font-size: 20px;
+
+}
+
+#humidity {
+    position: relative;
+
+    &:after {
+        content: "%";
+        font-size: 30px;
+    }
+}
+
+#air-pressure {
+    &:after {
+        content: "hPa";
+    }
+}
+
+#wind-speed {
+    &:after {
+        content: "km/h";
+    }
+}
+
+.ph-form__wrapper {
+    width: 200px;
+}
+
+#ph-search__wrapper {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    top: 15px;
+    transition: all .5s;
+    opacity: 0;
+    visibility: hidden;
+
+
+    &:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 14px;
+        transform: translateY(-50%);
+        background-image: url("https://hudeopra.github.io/open-weather-api/img/search.png");
+        background-size: contain;
+        height: 16px;
+        width: 16px;
+        z-index: 2;
+    }
+
+}
+
+input[type=text] {
+    padding: 8px 12px;
+    outline: 0;
+    border: 0;
+    border-bottom: 1px solid #fff;
+    font-weight: 600;
+    background: transparent;
+    color: #fff;
+
+    &::placeholder {
+        color: #fff;
+    }
+
+    &:focus,
+    &:active {
+        border-color: rgb(0, 255, 0);
+    }
+}
+
+input[type=submit] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0;
+    background-color: transparent;
+    border: 0;
+    height: 33px;
+    width: 33px;
+    z-index: 3;
+}
+
+#ph-history-trigger {
+    padding: 12px 30px;
+    border: 1px solid transparent;
+    transition: all .5s;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 99;
+
+    &:hover {
+        border-color: #fff;
+    }
+}
+
+@media screen and (max-width:991px) {
+    .ph-main__head img {
+        width: 100px;
+    }
+
+    .ph-main__summary {
+        top: 2.5rem;
+        left: 2.5rem;
+        width: calc(100vw - 5rem);
+    }
+
+    .ph-main__detail--content p {
+        font-size: 36px;
+    }
+}
+
+.ph-hstorypage {
+    background: url();
+}
+
+@media screen and (max-width:767px) {
+    .ph-main__detail {
+        position: static;
+    }
+
+    .ph-form__wrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+@media screen and (max-width:575px) {
+    .ph-main__summary {
+        top: 10rem;
+    }
+
+    .ph-form__wrapper {
+        position: absolute;
+        top: -5rem;
+        right: auto;
+        left: 0;
+    }
+
+    #ph-current-temp {
+        font-size: 46px;
+    }
+
+    .ph-main__detail h3 {
+        font-size: 20px;
+    }
+
+    .ph-main__detail--content p {
+        font-size: 28px;
+    }
+
+    .ph-main__detail--icon {
+        width: 50px;
+    }
+}
+
+#ph-history__wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &:after {
+        content: "";
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: rgba(0, 0, 0, .8);
+
+    }
+}
+
+#ph-history {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    right: 50px;
+    transform: translateY(-50%);
+    width: calc(100% - 100px);
+    z-index: 4;
+    display: flex;
+    gap: 30px;
+
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 1px 2px rgba(225, 225, 225, 1);
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px 5px rgba(0, 206, 27, 1);
+    }
+}
+
+.ph-history__item {
+    color: #000;
+    background-color: #fff;
+    display: block;
+    margin-bottom: 30px;
+    min-width: 200px;
+    padding: 40px 30px;
+    border-radius: 8px;
+
+    p {
+        position: relative;
+
+        &:not(:last-of-type) {
+            margin-bottom: 15px;
+        }
+
+        &:first-of-type {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        &:nth-of-type(n):before {
+            content: "";
+            position: absolute;
+            left: -40px;
+            top: 0;
+            height: 26px;
+            width: 26px;
+            background-size: contain;
+            filter: invert(100%);
+            -webkit-filter: invert(100%);
+        }
+
+        &:nth-of-type(3),
+        &:nth-of-type(4),
+        &:nth-of-type(5),
+        &:nth-of-type(6) {
+            margin-left: 40px;
+        }
+
+        &:nth-of-type(3):before {
+            background-image: url("../weather/img/temp.png");
+        }
+
+        &:nth-of-type(4):before {
+            background-image: url("../weather/img/humidity.png");
+        }
+
+        &:nth-of-type(5):before {
+            background-image: url("../weather/img/pressure.png");
+        }
+
+        &:nth-of-type(6):before {
+            background-image: url("../weather/img/wind.png");
+        }
+    }
+
+
+}
+
+.ph-text-vertical {
+    writing-mode: tb-rl;
+    transform: rotate(-180deg);
+    text-align: center;
+    font-size: 38px;
+    font-weight: bold;
+
+}
+
+@media screen and (max-width:1810px) {
+    #ph-history {
+        overflow-x: scroll;
+    }
+}

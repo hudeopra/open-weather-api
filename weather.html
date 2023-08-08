@@ -9,7 +9,9 @@
         <!-- google font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap"
+            rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="2358823_Prabin-Maharjan.css">
     </head>
@@ -17,7 +19,9 @@
         <main>
             <!-- Background Image in final complition will change with the weather conditions -->
             <section class="ph-backgorund">
-                <img src="https://hudeopra.github.io/open-weather-api/img/banner.jpg" alt="">
+                <img
+                    src="https://hudeopra.github.io/open-weather-api/img/banner.jpg"
+                    alt>
             </section>
             <section class="ph-main">
                 <!-- All contents are inside the ph-main__summary-->
@@ -25,14 +29,16 @@
                     <!-- content devided into 2 parts with classes ph-main__head and ph-main__content-->
                     <div class="ph-main__head">
                         <!-- icon as per weather condition -->
-                        <img id="ph-main__weather-icon" src="https://hudeopra.github.io/open-weather-api/img/icon/default.png" alt="">
+                        <img id="ph-main__weather-icon"
+                            src="https://hudeopra.github.io/open-weather-api/img/icon/default.png"
+                            alt>
                         <div class="ph-main__head--content">
                             <!-- weather condition from JS-->
                             <h1 id="ph-current-weather">
                                 -----
                             </h1>
                             <!-- weather location from JS-->
-                            <h2 id="ph-current-location">    
+                            <h2 id="ph-current-location">
                                 --------
                             </h2>
                             <!-- Current date from JS-->
@@ -42,22 +48,26 @@
                     <div class="ph-main__content">
                         <!-- weather temprature from JS-->
                         <p id="ph-current-temp">
-                            -- 
+                            --
                         </p>
                         <div class="ph-form__wrapper">
                             <!-- click event called in js using id -->
                             <a href="javascript:void(0)" id="ph-search-trigger">
-                                <img src="https://hudeopra.github.io/open-weather-api/img/pin.png" alt="">
+                                <img
+                                    src="https://hudeopra.github.io/open-weather-api/img/pin.png"
+                                    alt>
                                 <span>Change Location</span>
                             </a>
                             <!-- form hidden by default and shown to user on click of above event -->
-                            <form name="search" class="" id="ph-search__wrapper" method="post" action="weather_data.php">
+                            <form name="search" class id="ph-search__wrapper"
+                                method="post" action="weather_data.php">
                                 <!-- input type text is where the city name is entered -->
-                                <input type="text" placeholder="City Name" name="cityName">
+                                <input type="text" placeholder="City Name"
+                                    name="cityName">
                                 <!-- on click submit or enter, the form sends the content in the text field to js -->
                                 <input type="submit">
                             </form>
-                            
+
                         </div>
                     </div>
                     <div class="ph-main__detail">
@@ -65,7 +75,7 @@
                         <div class="ph-main__detail--item">
                             <div class="ph-main__detail--icon">
                                 <!-- icon for humidity which will remain unchanged -->
-                                <img src="img/humidity.png" alt="">
+                                <img src="img/humidity.png" alt>
                             </div>
                             <div class="ph-main__detail--content">
                                 <h3>
@@ -79,7 +89,7 @@
                         <div class="ph-main__detail--item">
                             <div class="ph-main__detail--icon">
                                 <!-- icon for Air Pressure which will remain unchanged -->
-                                <img src="img/pressure.png" alt="">
+                                <img src="img/pressure.png" alt>
                             </div>
                             <div class="ph-main__detail--content">
                                 <h3>
@@ -93,7 +103,7 @@
                         <div class="ph-main__detail--item">
                             <div class="ph-main__detail--icon">
                                 <!-- icon for Wind Speed which will remain unchanged -->
-                                <img src="img/wind.png" alt="">
+                                <img src="img/wind.png" alt>
                             </div>
                             <div class="ph-main__detail--content">
                                 <h3>
@@ -108,202 +118,26 @@
                 </div>
                 <div class="ph-history ph">
                     <!-- History will be added later on for now a dummy button -->
-                    <a href="javascript:void(0)" id="ph-history-trigger">View History</a>
+                    <a href="javascript:void(0)"
+                        id="ph-history-trigger">View History</a>
                     <div class="ph-history__container">
                         <span id="ph-history-location"></span>
-                        <div  id="historical-data"  class="ph-history__wrapper">
-                            <div class="ph-history__item" id="day7">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                            <div class="ph-history__item" id="day6">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                            <div class="ph-history__item" id="day5">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                            <div class="ph-history__item" id="day4">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                            <div class="ph-history__item" id="day3">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                            <div class="ph-history__item" id="day2">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                            <div class="ph-history__item" id="day1">
-                                <div class="date">
-
-                                </div>
-                                <div class="location ">
-
-                                </div>
-                                <div class="weatherMain ">
-
-                                </div>
-                                <div class="temperature ">
-
-                                </div>
-                                <div class="humidity ">
-
-                                </div>
-                                <div class="date">
-
-                                </div>
-                                <div class="pressure ">
-
-                                </div>
-                                <div class="windSpeed ">
-
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
+                <div id="ph-history__wrapper"></div>
             </section>
         </main>
-        
-    
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="2358823_Prabin-Maharjan.js"></script>
+        <script>
+            
+        </script>
         
-
+        
     </body>
 </html>
+
+<!-- ddl movify table data -->
+<!-- dml modify table elements-->

@@ -68,7 +68,16 @@ function dayFormat(day) {
 }
 // calling getdate() function
 getdate()
-
+async function fetchLatestWeatherData() {
+    try {
+        const response = await fetch('http://localhost/weather/retrieve_data.php');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
 // Function to update weather data and display on the webpage
 function updateWeatherData(data) {
     document.getElementById("ph-current-weather").innerHTML = data.weather[0].main;
@@ -107,39 +116,14 @@ function updateWeatherData(data) {
     }
 
 }
-// Function to update the data.json file with the latest JSON data
-async function updateDataFile(jsonData) {
-    try {
-        // Send an AJAX POST request to the PHP script to update the data.json file
-        const response = await fetch('http://localhost/weather/storedata.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: jsonData
-        });
 
-        // Check the response status
-        if (!response.ok) {
-            throw "Error updating data.json file";
-        }
-
-        // Parse the response
-        const result = await response.json();
-
-        // Log the result in the console (optional)
-        console.log(result);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
 // Function to fetch weather data from the API and update data.json
 async function weatherCheck(city) {
     try {
         const response = await fetch(url + `&appid=${apikey}` + `&q=` + city);
         const data = await response.json();
-        console.log(data);
+
 
         if (data.cod === "404") {
             alert("City not found");
@@ -154,8 +138,6 @@ async function weatherCheck(city) {
 
         // Update the data.json file with the latest JSON data
         await updateDataFile(jsonData);
-
-        console.log('Data.json file updated successfully!');
     } catch (error) {
         console.error('Error:', error);
     }
@@ -178,8 +160,6 @@ async function updateDataFile(jsonData) {
             throw "Error updating data.json file";
         }
 
-        // Log the result in the console (optional)
-        console.log('Data.json file updated successfully!');
     } catch (error) {
         console.error('Error:', error);
     }
@@ -227,6 +207,7 @@ function validateForm(e) {
 
     // Calls the weatherCheck function with the updated searchCity value
     weatherCheck(searchCity);
+
 }
 
 // Execute onPageLoad function when the page finishes loading
@@ -234,128 +215,54 @@ window.addEventListener('load', onPageLoad);
 
 // Adds an event listener to the form element with the ID "search" for the "submit" event.
 // When the form is submitted, the validateForm function is called.
-searchForm.addEventListener("submit", validateForm);
+
+
 
 
 // Adds a click event listener to the entire document (page) using jQuery's $(document).on() function.
 // The event listener is triggered when a click event occurs on an element with the ID "ph-search-trigger".
 // it is an anonymous function
-$(document).on('click', '.ph-history #ph-search-trigger', function () {
-    // toggle class named "active" everytime the function is triggred 
-    $('#ph-search-trigger').toggleClass('active');
-});
+// JavaScript
+$(document).ready(function () {
+    // Define a variable to hold the interval ID
+    let refreshInterval;
 
-
-// Add this script tag to your HTML file where you want to fetch and display historical weather data 
-
-// Function to fetch historical weather data from the JSON file
-async function fetchHistoricalWeatherData() {
-    try {
-        const response = await fetch('http://localhost/weather/history_data.json');
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
-
-
-// Function to display historical weather data on the webpage
-function displayHistoricalWeatherData(historicalData) {
-    // Get the HTML element where you want to display the historical data
-    const historicalDataContainer = document.getElementById('historical-data');
-
-    // Check if historicalData is not empty
-    if (historicalData && historicalData.length > 0) {
-        // Clear the container
-        historicalDataContainer.innerHTML = '';
-
-        // Loop through the historical data and update the HTML elements with data
-        historicalData.forEach((data, index) => {
-            const dayElement = document.createElement('div');
-            dayElement.classList.add('ph-history__item');
-            dayElement.id = `day${7 - index}`;
-
-            // Extract only the date part from the date property
-            const date = new Date(data.date);
-            const formattedDate = date.toISOString().split('T')[0];
-
-            dayElement.innerHTML = `
-          <div class="date">Date: ${formattedDate}</div>
-          <div class="location">Location Name: ${data.location}</div>
-          <div class="weatherMain">Weather Main: ${data.weather_main}</div>
-          <div class="temperature">Temperature: ${data.temperature}</div>
-          <div class="humidity">Humidity: ${data.humidity}</div>
-          <div class="pressure">Pressure: ${data.pressure}</div>
-          <div class="windSpeed">Wind Speed: ${data.wind_speed}</div>
-        `;
-
-            historicalDataContainer.appendChild(dayElement);
-        });
-    } else {
-        // If historicalData is empty or null, display an error message
-        historicalDataContainer.innerHTML = 'No historical data found.';
-    }
-}
-
-// Function to fetch historical weather data from the JSON file
-function fetchHistoricalWeatherData() {
-    const apiUrl = 'http://localhost/weather/history_data.json';
-
-    return fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    // Function to fetch data from storedata.php and display it in the HTML
+    function displayHistoricalData() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("ph-history__wrapper").innerHTML = this.responseText;
             }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            // Handle error or return empty array if there's an issue
-            return [];
-        });
-}
-
-// Call the fetchHistoricalWeatherData function and display the data
-fetchHistoricalWeatherData().then((historicalData) => {
-    displayHistoricalWeatherData(historicalData);
-});
-
-
-// Function to fetch historical weather data and update the "historical-data" div
-function fetchHistoricalData() {
-    const cityName = document.getElementById("cityName").value;
-    if (cityName === "") {
-        alert("Please enter a city name.");
-        return;
+        };
+        xhttp.open("GET", "storedata.php", true);
+        xhttp.send();
     }
 
-    // Make a POST request to retrieve historical weather data
-    fetch("http://localhost/weather/retrieve_data.php", {
-        method: "POST",
-        body: JSON.stringify({ name: cityName }),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            // Process the data and update the "historical-data" div
-            const historicalDataDiv = document.getElementById("historical-data");
-            // Update the "historical-data" div's innerHTML here
-            // For example:
-            historicalDataDiv.innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
-        })
-        .catch((error) => {
-            console.error("Error fetching weather data:", error);
-        });
-}
+    // Call the function initially to display historical data
+    displayHistoricalData();
 
-// Event listener for the form submission
-document.getElementById("ph-search__wrapper").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the form from submitting
-    fetchHistoricalData(); // Call the function to fetch and update the historical data
+    // Set up a timer to refresh the data every 5 seconds
+    refreshInterval = setInterval(displayHistoricalData, 5000);
+
+    // Add click event handler for #ph-history-trigger element
+    $(document).on('click', '#ph-history-trigger', function (e) {
+        e.preventDefault();
+        // Toggle the class "active" on #ph-history__wrapper element
+        $('#ph-history__wrapper').toggleClass('active');
+
+        // Update the innerHTML of #ph-history-trigger element
+        const historyTrigger = $('#ph-history-trigger');
+        if ($('#ph-history__wrapper').hasClass('active')) {
+            historyTrigger.text('Close History');
+            // Clear the interval when the toggle is active
+            clearInterval(refreshInterval);
+        } else {
+            historyTrigger.text('View History');
+            // Start the interval again when the toggle is not active
+            refreshInterval = setInterval(displayHistoricalData, 5000);
+        }
+    });
 });
 
 

@@ -207,7 +207,7 @@ main {
   right: 14px;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-  background-image: url("img/search.png");
+  background-image: url("https://hudeopra.github.io/open-weather-api/img/search.png");
   background-size: contain;
   height: 16px;
   width: 16px;
@@ -261,6 +261,10 @@ input[type=submit] {
   border: 1px solid transparent;
   -webkit-transition: all .5s;
   transition: all .5s;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  z-index: 99;
 }
 
 #ph-history-trigger:hover {
@@ -279,6 +283,10 @@ input[type=submit] {
   .ph-main__detail--content p {
     font-size: 36px;
   }
+}
+
+.ph-hstorypage {
+  background: url();
 }
 
 @media screen and (max-width: 767px) {
@@ -313,6 +321,135 @@ input[type=submit] {
   }
   .ph-main__detail--icon {
     width: 50px;
+  }
+}
+
+#ph-history__wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+#ph-history__wrapper.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+#ph-history__wrapper:after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#ph-history {
+  position: absolute;
+  top: 50%;
+  left: 50px;
+  right: 50px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: calc(100% - 100px);
+  z-index: 4;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 30px;
+}
+
+#ph-history::-webkit-scrollbar {
+  width: 12px;
+}
+
+#ph-history::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 1px 2px #e1e1e1;
+  border-radius: 10px;
+}
+
+#ph-history::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px 5px #00ce1b;
+}
+
+.ph-history__item {
+  color: #000;
+  background-color: #fff;
+  display: block;
+  margin-bottom: 30px;
+  min-width: 200px;
+  padding: 40px 30px;
+  border-radius: 8px;
+}
+
+.ph-history__item p {
+  position: relative;
+}
+
+.ph-history__item p:not(:last-of-type) {
+  margin-bottom: 15px;
+}
+
+.ph-history__item p:first-of-type {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.ph-history__item p:nth-of-type(n):before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 0;
+  height: 26px;
+  width: 26px;
+  background-size: contain;
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+}
+
+.ph-history__item p:nth-of-type(3), .ph-history__item p:nth-of-type(4), .ph-history__item p:nth-of-type(5), .ph-history__item p:nth-of-type(6) {
+  margin-left: 40px;
+}
+
+.ph-history__item p:nth-of-type(3):before {
+  background-image: url("../weather/img/temp.png");
+}
+
+.ph-history__item p:nth-of-type(4):before {
+  background-image: url("../weather/img/humidity.png");
+}
+
+.ph-history__item p:nth-of-type(5):before {
+  background-image: url("../weather/img/pressure.png");
+}
+
+.ph-history__item p:nth-of-type(6):before {
+  background-image: url("../weather/img/wind.png");
+}
+
+.ph-text-vertical {
+  -webkit-writing-mode: tb-rl;
+      -ms-writing-mode: tb-rl;
+          writing-mode: tb-rl;
+  -webkit-transform: rotate(-180deg);
+          transform: rotate(-180deg);
+  text-align: center;
+  font-size: 38px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1810px) {
+  #ph-history {
+    overflow-x: scroll;
   }
 }
 /*# sourceMappingURL=2358823_Prabin-Maharjan.css.map */
