@@ -360,6 +360,7 @@ input[type=submit] {
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
   width: calc(100% - 100px);
+  overflow-x: scroll;
   z-index: 4;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -408,7 +409,7 @@ input[type=submit] {
   content: "";
   position: absolute;
   left: -40px;
-  top: 0;
+    top: -5px;
   height: 26px;
   width: 26px;
   background-size: contain;
@@ -421,19 +422,19 @@ input[type=submit] {
 }
 
 .ph-history__item p:nth-of-type(3):before {
-  background-image: url("../weather/img/temp.png");
+  background-image: url("http://weather-webapp.000.pe/img/temp.png");
 }
 
 .ph-history__item p:nth-of-type(4):before {
-  background-image: url("../weather/img/humidity.png");
+  background-image: url("http://weather-webapp.000.pe/img/humidity.png");
 }
 
 .ph-history__item p:nth-of-type(5):before {
-  background-image: url("../weather/img/pressure.png");
+  background-image: url("http://weather-webapp.000.pe/img/pressure.png");
 }
 
 .ph-history__item p:nth-of-type(6):before {
-  background-image: url("../weather/img/wind.png");
+  background-image: url("http://weather-webapp.000.pe/img/wind.png");
 }
 
 .ph-text-vertical {
